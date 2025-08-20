@@ -1,4 +1,4 @@
-"""Trait comparison relations for structdantic."""
+"""Trait comparison relations for duckdantic."""
 
 from __future__ import annotations
 

@@ -1,4 +1,4 @@
-"""Pragmatic type comparer for structdantic traits."""
+"""Pragmatic type comparer for duckdantic traits."""
 
 from __future__ import annotations
 
@@ -17,7 +17,8 @@ _Any = Any
 
 
 class DefaultTypeComparer:
-    """Covers Optional/Union, Annotated, Literal, basic containers, numeric
+    """Covers Optional/Union, Annotated, Literal, basic containers, numeric.
+
     widening.
 
     The comparer works on runtime typing objects (e.g., ``list[str]``, ``Annotated[int, ...]``).

@@ -1,4 +1,4 @@
-"""Trait matching (satisfies/explain) for structdantic."""
+"""Trait matching (satisfies/explain) for duckdantic."""
 
 from __future__ import annotations
 
@@ -12,8 +12,10 @@ from duckdantic.traits import FieldSpec, TraitSpec
 
 
 def _iter_alias_strings(fv: FieldView, mode: AliasMode) -> list[str]:
-    """Yield alias strings for a field in a deterministic order based on
-    mode."""
+    """Yield alias strings for a field in a deterministic order based on.
+
+    mode.
+    """
     seen: list[str] = []
     primary = None
     if fv.alias is not None:

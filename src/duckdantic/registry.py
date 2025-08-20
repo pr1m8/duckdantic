@@ -1,4 +1,4 @@
-"""In-memory trait registry for structdantic."""
+"""In-memory trait registry for duckdantic."""
 
 from __future__ import annotations
 

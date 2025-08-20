@@ -1,4 +1,4 @@
-"""Trait set operations (intersect/union/minus) for structdantic."""
+"""Trait set operations (intersect/union/minus) for duckdantic."""
 
 from __future__ import annotations
 

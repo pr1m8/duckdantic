@@ -1,4 +1,4 @@
-"""Structdantic — structural typing helpers for (and beyond) Pydantic v2.
+"""Duckdantic — structural typing helpers for (and beyond) Pydantic v2.
 
 Provides field normalization, declarative trait specs, a pragmatic type
 comparer, and matching utilities, with Google-style docstrings suitable

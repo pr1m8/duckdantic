@@ -1,4 +1,4 @@
-"""Type compatibility policies for structdantic."""
+"""Type compatibility policies for duckdantic."""
 
 from __future__ import annotations
 

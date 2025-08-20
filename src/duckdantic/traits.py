@@ -1,4 +1,4 @@
-"""Declarative trait specifications for structdantic."""
+"""Declarative trait specifications for duckdantic."""
 
 from __future__ import annotations
 

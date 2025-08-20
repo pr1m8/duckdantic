@@ -1,4 +1,4 @@
-"""Naming helpers for structdantic traits."""
+"""Naming helpers for duckdantic traits."""
 
 from __future__ import annotations
 

@@ -1,6 +1,6 @@
 """Normalize classes, instances, and mappings into `FieldView`s.
 
-The `normalize_fields` function is the first step of structdantic: given a
+The `normalize_fields` function is the first step of duckdantic: given a
 variety of inputs, it returns a uniform mapping of field names to FieldViews.
 
 Supported inputs:
