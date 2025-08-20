@@ -24,7 +24,7 @@ from __future__ import annotations
 from collections.abc import Mapping
 from typing import Any, get_args, get_origin, get_type_hints
 
-from strucdantic.fields import FieldAliasSet, FieldOrigin, FieldView
+from duckdantic.fields import FieldAliasSet, FieldOrigin, FieldView
 
 
 def _from_mapping(mapping: Mapping[str, Any]) -> dict[str, FieldView]:
@@ -46,7 +46,7 @@ def _from_mapping(mapping: Mapping[str, Any]) -> dict[str, FieldView]:
             def _as_tuple(x):
                 if x is None:
                     return ()
-                if isinstance(x, (list, tuple)):
+                if isinstance(x, list | tuple):
                     return tuple(str(i) for i in x)
                 return (str(x),)
 
@@ -86,7 +86,12 @@ def _strip_required_optional(t: Any) -> Any:
         return args[0] if args else Any
     # Fallback: detect by name to be resilient
     if (
-        o is not None and getattr(o, "__qualname__", str(o)).endswith("Required")
+        o is not None
+        and getattr(
+            o,
+            "__qualname__",
+            str(o),
+        ).endswith("Required")
     ) or getattr(o, "__qualname__", str(o)).endswith("NotRequired"):
         args = get_args(t)
         return args[0] if args else Any
@@ -125,7 +130,9 @@ def _from_class(cls: type) -> dict[str, FieldView]:
             hints = get_type_hints(cls, include_extras=True)
             return {
                 name: FieldView(
-                    name=name, annotation=ann, origin=FieldOrigin.ANNOTATION
+                    name=name,
+                    annotation=ann,
+                    origin=FieldOrigin.ANNOTATION,
                 )
                 for name, ann in hints.items()
             }
@@ -136,14 +143,22 @@ def _from_class(cls: type) -> dict[str, FieldView]:
     if hasattr(cls, "__attrs_attrs__"):
         hints = get_type_hints(cls, include_extras=True)
         return {
-            name: FieldView(name=name, annotation=ann, origin=FieldOrigin.ANNOTATION)
+            name: FieldView(
+                name=name,
+                annotation=ann,
+                origin=FieldOrigin.ANNOTATION,
+            )
             for name, ann in hints.items()
         }
 
     # Plain annotations
     hints = get_type_hints(cls, include_extras=True)
     return {
-        name: FieldView(name=name, annotation=ann, origin=FieldOrigin.ANNOTATION)
+        name: FieldView(
+            name=name,
+            annotation=ann,
+            origin=FieldOrigin.ANNOTATION,
+        )
         for name, ann in hints.items()
     }
 
@@ -167,7 +182,7 @@ def normalize_fields(obj: Any) -> dict[str, FieldView]:
     if isinstance(obj, type):
         return _from_class(obj)
     # Instance
-    if not isinstance(obj, (str, bytes)) and hasattr(obj, "__class__"):
+    if not isinstance(obj, str | bytes) and hasattr(obj, "__class__"):
         return _from_class(obj.__class__)
     raise TypeError(
         "Unsupported input for normalize_fields: expected mapping, class, or instance",

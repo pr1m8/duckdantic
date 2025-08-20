@@ -2,8 +2,8 @@ from __future__ import annotations
 
 from typing import Any, get_args, get_origin
 
-from strucdantic.fields import FieldOrigin, FieldView
-from strucdantic.providers.base import Capabilities, FieldProvider
+from duckdantic.fields import FieldOrigin, FieldView
+from duckdantic.providers.base import Capabilities, FieldProvider
 
 
 def _strip_required_optional(t: Any) -> Any:
@@ -17,7 +17,12 @@ def _strip_required_optional(t: Any) -> Any:
         args = get_args(t)
         return args[0] if args else Any
     if (
-        o is not None and getattr(o, "__qualname__", str(o)).endswith("Required")
+        o is not None
+        and getattr(
+            o,
+            "__qualname__",
+            str(o),
+        ).endswith("Required")
     ) or getattr(o, "__qualname__", str(o)).endswith("NotRequired"):
         args = get_args(t)
         return args[0] if args else Any
@@ -27,7 +32,11 @@ def _strip_required_optional(t: Any) -> Any:
 class TypedDictProvider(FieldProvider):
     def can_handle(self, obj: Any) -> bool:
         return isinstance(obj, type) and (
-            hasattr(obj, "__required_keys__") or hasattr(obj, "__optional_keys__")
+            hasattr(obj, "__required_keys__")
+            or hasattr(
+                obj,
+                "__optional_keys__",
+            )
         )
 
     def fields(self, obj: type) -> dict[str, FieldView]:

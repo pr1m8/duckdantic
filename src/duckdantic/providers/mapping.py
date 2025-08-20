@@ -3,8 +3,8 @@ from __future__ import annotations
 from collections.abc import Mapping
 from typing import Any
 
-from strucdantic.fields import FieldAliasSet, FieldOrigin, FieldView
-from strucdantic.providers.base import Capabilities, FieldProvider
+from duckdantic.fields import FieldAliasSet, FieldOrigin, FieldView
+from duckdantic.providers.base import Capabilities, FieldProvider
 
 
 class MappingProvider(FieldProvider):
@@ -26,7 +26,7 @@ class MappingProvider(FieldProvider):
                 def _as_tuple(x):
                     if x is None:
                         return ()
-                    if isinstance(x, (list, tuple, set)):
+                    if isinstance(x, list | tuple | set):
                         return tuple(str(i) for i in x)
                     choices = getattr(x, "choices", None)
                     if choices is not None:
@@ -34,7 +34,7 @@ class MappingProvider(FieldProvider):
                             return tuple(str(i) for i in choices)
                         except Exception:
                             pass
-                    if hasattr(x, "__iter__") and not isinstance(x, (str, bytes)):
+                    if hasattr(x, "__iter__") and not isinstance(x, str | bytes):
                         try:
                             return tuple(str(i) for i in x)
                         except Exception:

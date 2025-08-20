@@ -5,9 +5,9 @@ from __future__ import annotations
 from collections.abc import Iterable, Mapping
 from dataclasses import dataclass, field
 
-from strucdantic.match import satisfies
-from strucdantic.policy import TypeCompatPolicy
-from strucdantic.traits import TraitSpec
+from duckdantic.match import satisfies
+from duckdantic.policy import TypeCompatPolicy
+from duckdantic.traits import TraitSpec
 
 
 @dataclass
@@ -29,7 +29,9 @@ class TraitRegistry:
         return self._traits.values()
 
     def find_compatible(
-        self, obj: object, policy: TypeCompatPolicy
+        self,
+        obj: object,
+        policy: TypeCompatPolicy,
     ) -> Mapping[str, bool]:
         """Return a map of trait name -> satisfied?
 

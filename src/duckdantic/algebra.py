@@ -2,9 +2,9 @@
 
 from __future__ import annotations
 
-from strucdantic.comparer import DefaultTypeComparer
-from strucdantic.policy import TypeCompatPolicy
-from strucdantic.traits import FieldSpec, TraitSpec
+from duckdantic.comparer import DefaultTypeComparer
+from duckdantic.policy import TypeCompatPolicy
+from duckdantic.traits import FieldSpec, TraitSpec
 
 
 def intersect(a: TraitSpec, b: TraitSpec, policy: TypeCompatPolicy) -> TraitSpec:

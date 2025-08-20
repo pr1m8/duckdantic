@@ -4,11 +4,11 @@ from __future__ import annotations
 
 from typing import Any
 
-from strucdantic.comparer import DefaultTypeComparer
-from strucdantic.fields import FieldView
-from strucdantic.normalize import normalize_fields
-from strucdantic.policy import AliasMode, TypeCompatPolicy
-from strucdantic.traits import FieldSpec, TraitSpec
+from duckdantic.comparer import DefaultTypeComparer
+from duckdantic.fields import FieldView
+from duckdantic.normalize import normalize_fields
+from duckdantic.policy import AliasMode, TypeCompatPolicy
+from duckdantic.traits import FieldSpec, TraitSpec
 
 
 def _iter_alias_strings(fv: FieldView, mode: AliasMode) -> list[str]:
@@ -175,7 +175,7 @@ def explain(obj: Any, trait: TraitSpec, policy: TypeCompatPolicy) -> dict:
                         ),
                         "desired": str(fs.typ),
                         "why": why,
-                    }
+                    },
                 )
     return {
         "ok": ok,

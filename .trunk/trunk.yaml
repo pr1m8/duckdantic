@@ -6,11 +6,12 @@ cli:
 plugins:
   sources:
     - id: trunk
-      ref: v1.7.1
+      ref: v1.7.2
       uri: https://github.com/trunk-io/plugins
 
 runtimes:
   enabled:
+    - python@3.10.8
     - go@1.21.0
     - node@22.16.0
 
@@ -142,7 +143,7 @@ tools:
     - gitleaks@8.28.0
     - flake8@7.3.0
     - pylint@3.3.8
-    - pyright@1.1.403
+    - pyright@1.1.404
     - sqlfluff@3.4.2
     - yapf@0.43.0
     - sql-formatter@15.6.6

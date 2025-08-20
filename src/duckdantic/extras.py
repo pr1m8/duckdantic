@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from strucdantic.build.trait_builder import TraitBuilder
+from duckdantic.build.trait_builder import TraitBuilder
 
 
 def trait_from_model(

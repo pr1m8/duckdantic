@@ -4,9 +4,9 @@ from __future__ import annotations
 
 from enum import Enum
 
-from strucdantic.comparer import DefaultTypeComparer
-from strucdantic.policy import TypeCompatPolicy
-from strucdantic.traits import TraitSpec
+from duckdantic.comparer import DefaultTypeComparer
+from duckdantic.policy import TypeCompatPolicy
+from duckdantic.traits import TraitSpec
 
 
 class TraitRelation(Enum):
@@ -35,7 +35,9 @@ def _implies(a: TraitSpec, b: TraitSpec, policy: TypeCompatPolicy) -> bool:
 
 
 def compare_traits(
-    a: TraitSpec, b: TraitSpec, policy: TypeCompatPolicy
+    a: TraitSpec,
+    b: TraitSpec,
+    policy: TypeCompatPolicy,
 ) -> TraitRelation:
     """Classify the relation of two traits under a policy.
 

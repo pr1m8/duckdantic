@@ -1,19 +1,24 @@
 from __future__ import annotations
 
+import dataclasses
 from typing import Any, get_type_hints
 
-from strucdantic.fields import FieldOrigin, FieldView
-from strucdantic.providers.base import Capabilities, FieldProvider
+from duckdantic.fields import FieldOrigin, FieldView
+from duckdantic.providers.base import Capabilities, FieldProvider
 
 
-class AttrsProvider(FieldProvider):
+class DataclassProvider(FieldProvider):
     def can_handle(self, obj: Any) -> bool:
-        return isinstance(obj, type) and hasattr(obj, "__attrs_attrs__")
+        return isinstance(obj, type) and dataclasses.is_dataclass(obj)
 
     def fields(self, obj: type) -> dict[str, FieldView]:
         hints = get_type_hints(obj, include_extras=True)
         return {
-            name: FieldView(name=name, annotation=ann, origin=FieldOrigin.ANNOTATION)
+            name: FieldView(
+                name=name,
+                annotation=ann,
+                origin=FieldOrigin.ANNOTATION,
+            )
             for name, ann in hints.items()
         }
 
@@ -28,5 +33,5 @@ class AttrsProvider(FieldProvider):
             has_required=False,
             has_aliases=False,
             has_computed=False,
-            model_kind="attrs",
+            model_kind="dataclass",
         )

@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any, Protocol
 
-from strucdantic.fields import FieldView
+from duckdantic.fields import FieldView
 
 
 @dataclass(frozen=True)
@@ -35,7 +35,6 @@ class FieldProvider(Protocol):
 
 class ProviderRegistry:
     def __init__(self) -> None:
-        # (priority, provider)
         self._providers: list[tuple[int, FieldProvider]] = []
 
     def add(self, provider: FieldProvider, *, priority: int = 100) -> None:
@@ -64,12 +63,12 @@ def register_default_providers() -> None:
     global _defaults_added
     if _defaults_added:
         return
-    from strucdantic.providers.attrs import AttrsProvider
-    from strucdantic.providers.dataclass import DataclassProvider
-    from strucdantic.providers.mapping import MappingProvider
-    from strucdantic.providers.plainclass import PlainClassProvider
-    from strucdantic.providers.pydantic_v2 import PydanticV2Provider
-    from strucdantic.providers.typeddict import TypedDictProvider
+    from duckdantic.providers.attrs import AttrsProvider
+    from duckdantic.providers.dataclass import DataclassProvider
+    from duckdantic.providers.mapping import MappingProvider
+    from duckdantic.providers.plainclass import PlainClassProvider
+    from duckdantic.providers.pydantic_v2 import PydanticV2Provider
+    from duckdantic.providers.typeddict import TypedDictProvider
 
     registry.add(PydanticV2Provider(), priority=10)
     registry.add(DataclassProvider(), priority=20)

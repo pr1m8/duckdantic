@@ -14,7 +14,7 @@ from enum import Enum
 from hashlib import sha1
 from typing import Any, Protocol, get_type_hints
 
-from strucdantic.naming import short_type_token
+from duckdantic.naming import short_type_token
 
 
 class ShapeOrigin(Enum):

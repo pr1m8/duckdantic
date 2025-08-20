@@ -4,9 +4,9 @@ from __future__ import annotations
 
 from typing import Any
 
-from strucdantic.fields import FieldView
-from strucdantic.normalize import normalize_fields
-from strucdantic.shapes import shape_id_token
+from duckdantic.fields import FieldView
+from duckdantic.normalize import normalize_fields
+from duckdantic.shapes import shape_id_token
 
 _CACHE: dict[str, dict[str, FieldView]] = {}
 _HITS = 0

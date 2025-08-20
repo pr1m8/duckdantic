@@ -5,7 +5,7 @@ from __future__ import annotations
 from collections.abc import Mapping, Sequence, Set
 from typing import Annotated, Any, Literal, get_args, get_origin
 
-from strucdantic.policy import (
+from duckdantic.policy import (
     AnnotatedHandling,
     ContainerOriginMode,
     LiteralMode,

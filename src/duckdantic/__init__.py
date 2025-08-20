@@ -7,17 +7,17 @@ for auto-documentation.
 
 from __future__ import annotations
 
-from strucdantic.algebra import intersect, minus, union
-from strucdantic.cache import clear_cache, get_cache_stats, normalize_fields_cached
-from strucdantic.compare import TraitRelation, compare_traits
-from strucdantic.fields import FieldAliasSet, FieldOrigin, FieldView
-from strucdantic.match import explain, satisfies
-from strucdantic.naming import auto_name, short_type_token
-from strucdantic.normalize import normalize_fields
-from strucdantic.policy import POLICY_PRAGMATIC, AliasMode, TypeCompatPolicy
-from strucdantic.registry import TraitRegistry
-from strucdantic.shapes import ShapeOrigin, shape_id_token
-from strucdantic.traits import FieldSpec, TraitSpec
+from duckdantic.algebra import intersect, minus, union
+from duckdantic.cache import clear_cache, get_cache_stats, normalize_fields_cached
+from duckdantic.compare import TraitRelation, compare_traits
+from duckdantic.fields import FieldAliasSet, FieldOrigin, FieldView
+from duckdantic.match import explain, satisfies
+from duckdantic.naming import auto_name, short_type_token
+from duckdantic.normalize import normalize_fields
+from duckdantic.policy import POLICY_PRAGMATIC, AliasMode, TypeCompatPolicy
+from duckdantic.registry import TraitRegistry
+from duckdantic.shapes import ShapeOrigin, shape_id_token
+from duckdantic.traits import FieldSpec, TraitSpec
 
 __all__ = [
     "POLICY_PRAGMATIC",
