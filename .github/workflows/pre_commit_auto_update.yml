@@ -59,7 +59,7 @@ jobs:
             chore: auto-update development tooling
 
             - Updated pre-commit hooks
-            - Updated Trunk configuration  
+            - Updated Trunk configuration
             - Updated Python dependencies
           body: |
             ## 🤖 Automated Tooling Update
@@ -68,7 +68,7 @@ jobs:
 
             ### Changes:
             - **Pre-commit hooks**: ${{ env.PRE_COMMIT_UPDATED > 0 && '✅ Updated' || '⏭️ No changes' }}
-            - **Trunk linters**: ${{ env.TRUNK_UPDATED > 0 && '✅ Updated' || '⏭️ No changes' }}  
+            - **Trunk linters**: ${{ env.TRUNK_UPDATED > 0 && '✅ Updated' || '⏭️ No changes' }}
             - **Python deps**: ${{ env.UV_UPDATED > 0 && '✅ Updated' || '⏭️ No changes' }}
 
             Please review and merge if tests pass.

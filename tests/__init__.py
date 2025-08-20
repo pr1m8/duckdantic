@@ -2,3 +2,4 @@
 # <william.astley@algebraicwealth.com>
 #
 # SPDX-License-Identifier: MIT
+from __future__ import annotations

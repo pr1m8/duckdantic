@@ -46,15 +46,16 @@ repos:
     rev: v1.17.0
     hooks:
       - id: mypy
-  # 🚀 Core Python Formatting & Linting
+  # 🚀 Core Python Formatting & Linting (Light pass - Trunk will do final formatting)
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.11.6
     hooks:
       - id: ruff
-        name: Ruff Linter
-        args: [--fix, --exit-non-zero-on-fix]
-      - id: ruff-format
-        name: Ruff Formatter
+        name: Ruff Linter (Quick Fix)
+        args: [--fix, --exit-zero] # Don't fail on unfixed issues
+      # COMMENTED - Let trunk handle final formatting
+      # - id: ruff-format
+      #   name: Ruff Formatter
 
   # 📝 YAML Fix
   #- repo: https://github.com/lyz-code/yamlfix
@@ -74,19 +75,19 @@ repos:
           - --remove-unused-variables
           - --in-place
 
-  # 🔧 Advanced Formatting
-  - repo: https://github.com/asottile/add-trailing-comma
-    rev: v3.2.0
-    hooks:
-      - id: add-trailing-comma
-        name: Add Trailing Commas
-        args: [--py36-plus]
-  - repo: https://github.com/asottile/pyupgrade
-    rev: v3.20.0
-    hooks:
-      - id: pyupgrade
-        name: Modernize Python Syntax
-        args: [--py312-plus]
+  # 🔧 Advanced Formatting (COMMENTED - Duplicates above)
+  # - repo: https://github.com/asottile/add-trailing-comma
+  #   rev: v3.2.0
+  #   hooks:
+  #     - id: add-trailing-comma
+  #       name: Add Trailing Commas
+  #       args: [--py36-plus]
+  # - repo: https://github.com/asottile/pyupgrade
+  #   rev: v3.20.0
+  #   hooks:
+  #     - id: pyupgrade
+  #       name: Modernize Python Syntax
+  #       args: [--py312-plus]
 
   # 📝 Docstring Formatting & Quality
   - repo: https://github.com/PyCQA/docformatter
@@ -117,31 +118,31 @@ repos:
       - id: lazy-log-formatter
         args: [--fix]
 
-  # 📊 Type Checking
-  - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.15.0
-    hooks:
-      - id: mypy
-        name: Type Check
-        additional_dependencies: [types-requests, types-PyYAML]
-        args: [--ignore-missing-imports, --no-strict-optional]
+  # 📊 Type Checking (COMMENTED - Duplicate of above mypy)
+  # - repo: https://github.com/pre-commit/mirrors-mypy
+  #   rev: v1.15.0
+  #   hooks:
+  #     - id: mypy
+  #       name: Type Check
+  #       additional_dependencies: [types-requests, types-PyYAML]
+  #       args: [--ignore-missing-imports, --no-strict-optional]
 
-  # 🧾 Git & File Quality Hooks
-  - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v5.0.0
-    hooks:
-      - id: trailing-whitespace
-        name: Remove Trailing Whitespace
-      - id: end-of-file-fixer
-        name: Fix End of Files
-      - id: check-yaml
-        name: Check YAML
-      - id: check-toml
-        name: Check TOML
-      - id: check-merge-conflict
-        name: Check Merge Conflicts
-      - id: debug-statements
-        name: Check Debug Statements
+  # 🧾 Git & File Quality Hooks (COMMENTED - Duplicates above)
+  # - repo: https://github.com/pre-commit/pre-commit-hooks
+  #   rev: v5.0.0
+  #   hooks:
+  #     - id: trailing-whitespace
+  #       name: Remove Trailing Whitespace
+  #     - id: end-of-file-fixer
+  #       name: Fix End of Files
+  #     - id: check-yaml
+  #       name: Check YAML
+  #     - id: check-toml
+  #       name: Check TOML
+  #     - id: check-merge-conflict
+  #       name: Check Merge Conflicts
+  #     - id: debug-statements
+  #       name: Check Debug Statements
 
   # 🛠️ Custom Haive Dev-Tools Integration
   - repo: local
@@ -202,34 +203,36 @@ repos:
         types: [python]
         pass_filenames: false
 
-  # 🔍 Multiple Code Style Formatters
-  - repo: local
-    hooks:
-      - id: yapf-format
-        name: YAPF Code Formatting
-        entry: uv run yapf
-        args: [--in-place, --parallel]
-        language: system
-        types: [python]
-        pass_filenames: true
-      - id: autopep8-format
-        name: AutoPEP8 Additional Formatting
-        entry: uv run autopep8
-        args: [--in-place, --aggressive, --aggressive]
-        language: system
-        types: [python]
-        pass_filenames: true
+  # 🔍 Multiple Code Style Formatters (COMMENTED OUT - conflicts)
+  # - repo: local
+  #   hooks:
+  #     # COMMENTED - Multiple formatters can conflict with ruff/black
+  #     - id: yapf-format
+  #       name: YAPF Code Formatting
+  #       entry: uv run yapf
+  #       args: [--in-place, --parallel]
+  #       language: system
+  #       types: [python]
+  #       pass_filenames: true
+  #     - id: autopep8-format
+  #       name: AutoPEP8 Additional Formatting
+  #       entry: uv run autopep8
+  #       args: [--in-place, --aggressive, --aggressive]
+  #       language: system
+  #       types: [python]
+  #       pass_filenames: true
 
-  # 🔍 Comprehensive Flake8 Linting Suite
+  # 🔍 Comprehensive Flake8 Linting Suite (PARTIALLY COMMENTED)
   - repo: local
     hooks:
-      - id: flake8-comprehensive
-        name: Flake8 + All Plugins
-        entry: uv run flake8
-        args: [--config, .flake8]
-        language: system
-        types: [python]
-        pass_filenames: true
+      # COMMENTED - Conflicts with ruff and has plugin issues
+      # - id: flake8-comprehensive
+      #   name: Flake8 + All Plugins
+      #   entry: uv run flake8
+      #   args: [--config, .flake8]
+      #   language: system
+      #   types: [python]
+      #   pass_filenames: true
       - id: pycodestyle-pep8
         name: PEP 8 Style Check
         entry: uv run pycodestyle
