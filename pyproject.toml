@@ -46,8 +46,10 @@ dependencies = [
 ]
 
 [project.urls]
-Documentation = "https://github.com/duckdantic/duckdantic#readme"
-Issues = "https://github.com/duckdantic/duckdantic/issues"
+Documentation = "https://pr1m8.github.io/duckdantic/"
+Repository = "https://github.com/pr1m8/duckdantic"
+Issues = "https://github.com/pr1m8/duckdantic/issues"
+Changelog = "https://github.com/pr1m8/duckdantic/blob/main/CHANGELOG.md"
 Source = "https://github.com/duckdantic/duckdantic"
 
 [tool.hatch.version]
@@ -1282,6 +1284,9 @@ dev = [
   "zope-event>=5.1.1",
   "zope-interface>=7.2",
   "zstandard>=0.23.0",
+  "mkdocs-material>=9.6.18",
+  "mkdocstrings[python]>=0.30.0",
+  "mkdocs-minify-plugin>=0.8.0",
 ]
 docs = [
   "alabaster>=1.0.0",
