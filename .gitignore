@@ -48,9 +48,30 @@ htmlcov/
 # Documentation
 docs/_build/
 site/
+rtd_output/
 
 # Trunk
 .trunk/
+
+# Temporary files
+*.swp
+*.swo
+*~
+*.bak
+*.orig
+*.tmp
+
+# Claude/AI generated docs
+*CLAUDE.md
+*Claude.md
+*_SUMMARY.md
+*_STATUS.md
+*RELEASE*.md
+*SETUP*.md
+PROJECT_*.md
+DOCUMENTATION_*.md
+FINAL_*.md
+WORKFLOWS_*.md
 
 # OS
 .DS_Store
