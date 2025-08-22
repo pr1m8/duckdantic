@@ -7,7 +7,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "duckdantic"
-version = "1.0.4"
+version = "1.0.5"
 description = "Flexible structural typing and runtime validation for Python"
 readme = "README.md"
 requires-python = ">=3.12"
@@ -36,6 +36,12 @@ dependencies = ["typing-extensions>=4.5.0; python_version<'3.11'"]
 
 [project.optional-dependencies]
 pydantic = ["pydantic>=2.0.0"]
+docs = [
+    "mkdocs>=1.5.0",
+    "mkdocs-material>=9.0.0",
+    "mkdocstrings[python]>=0.24.0",
+    "pymdown-extensions>=10.0",
+]
 all = ["pydantic>=2.0.0"]
 
 [project.urls]
