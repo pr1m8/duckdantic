@@ -82,7 +82,7 @@ jobs:
             poetry run pytest --cov=src --cov-report=xml
           fi
       - name: ☁️ Upload coverage to Codecov
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: ./packages/${{ matrix.package }}/coverage.xml
