@@ -44,11 +44,11 @@ docs = [
 all = ["pydantic>=2.0.0"]
 
 [project.urls]
-Documentation = "https://pr1m8.github.io/duckdantic/"
+Documentation = "https://duckdantic.readthedocs.io/"
 Repository = "https://github.com/pr1m8/duckdantic"
 Issues = "https://github.com/pr1m8/duckdantic/issues"
 Changelog = "https://github.com/pr1m8/duckdantic/blob/main/CHANGELOG.md"
-Source = "https://github.com/duckdantic/duckdantic"
+"PyPI" = "https://pypi.org/project/duckdantic/"
 
 [tool.hatch.version]
 source = "vcs"
