@@ -1,8 +1,48 @@
-"""Duckdantic — structural typing helpers for (and beyond) Pydantic v2.
+"""Duckdantic - Flexible structural typing and runtime validation for Python.
 
-Provides field normalization, declarative trait specs, a pragmatic type
-comparer, and matching utilities, with Google-style docstrings suitable
-for auto-documentation.
+Duckdantic provides a powerful way to define structural types (traits) and check
+whether objects satisfy them at runtime, without requiring inheritance or type
+annotations. It works seamlessly with Pydantic, dataclasses, TypedDict, and
+plain Python objects.
+
+Key Features:
+    - Structural typing based on object shape, not inheritance
+    - Works with any Python object type
+    - Flexible type policies for customizable validation
+    - High-performance with intelligent caching
+    - ABC integration for isinstance/issubclass support
+    - Method signature checking
+    - Trait composition with set operations
+
+Basic Usage:
+    >>> from duckdantic import TraitSpec, FieldSpec, satisfies
+    >>>
+    >>> # Define a trait
+    >>> PersonTrait = TraitSpec(
+    ...     name="Person",
+    ...     fields=(
+    ...         FieldSpec("name", str, required=True),
+    ...         FieldSpec("age", int, required=True),
+    ...     )
+    ... )
+    >>>
+    >>> # Check if objects satisfy the trait
+    >>> person = {"name": "Alice", "age": 30}
+    >>> assert satisfies(person, PersonTrait)
+
+Duck API (Recommended):
+    >>> from pydantic import BaseModel
+    >>> from duckdantic import Duck
+    >>>
+    >>> class User(BaseModel):
+    ...     name: str
+    ...     email: str
+    >>>
+    >>> UserDuck = Duck(User)
+    >>>
+    >>> # Use with isinstance
+    >>> data = {"name": "Bob", "email": "bob@example.com"}
+    >>> assert isinstance(data, UserDuck)
 """
 
 from __future__ import annotations
