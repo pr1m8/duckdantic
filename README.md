@@ -3,16 +3,17 @@
 <div align="center">
 
 [![PyPI](https://img.shields.io/pypi/v/duckdantic.svg)](https://pypi.org/project/duckdantic/)
+[![Downloads](https://img.shields.io/pypi/dm/duckdantic.svg)](https://pypi.org/project/duckdantic/)
 [![Python Version](https://img.shields.io/pypi/pyversions/duckdantic.svg)](https://pypi.org/project/duckdantic/)
-[![License](https://img.shields.io/pypi/l/duckdantic.svg)](https://github.com/pr1m8/duckdantic/blob/main/LICENSE.txt)
-[![Tests](https://github.com/pr1m8/duckdantic/workflows/tests/badge.svg)](https://github.com/pr1m8/duckdantic/actions)
-[![Documentation](https://img.shields.io/badge/docs-mkdocs-blue)](https://pr1m8.github.io/duckdantic/)
+[![License](https://img.shields.io/pypi/l/duckdantic.svg)](https://github.com/pr1m8/duckdantic/blob/main/LICENSE)
+[![Tests](https://github.com/pr1m8/duckdantic/workflows/Test%20Documentation%20Build/badge.svg)](https://github.com/pr1m8/duckdantic/actions)
+[![Documentation](https://readthedocs.org/projects/duckdantic/badge/?version=latest)](https://duckdantic.readthedocs.io/en/latest/?badge=latest)
 
 **🚀 Structural typing and runtime validation for Python**
 
 *If it walks like a duck and quacks like a duck, then it's probably a duck*
 
-[📚 Documentation](https://pr1m8.github.io/duckdantic/) • [🎯 Examples](https://pr1m8.github.io/duckdantic/examples/) • [📦 PyPI](https://pypi.org/project/duckdantic/)
+[📚 Documentation](https://duckdantic.readthedocs.io/) • [🎯 Examples](https://github.com/pr1m8/duckdantic/tree/main/docs/examples) • [📦 PyPI](https://pypi.org/project/duckdantic/) • [🐙 GitHub](https://github.com/pr1m8/duckdantic)
 
 </div>
 
@@ -525,11 +526,11 @@ def process_person(person: PersonProtocol) -> str:
 
 | Resource | Description |
 |----------|-------------|
-| [📖 **Getting Started**](https://pr1m8.github.io/duckdantic/getting-started/) | Complete setup and basic usage guide |
-| [🎯 **Examples**](https://pr1m8.github.io/duckdantic/examples/) | Real-world usage patterns and recipes |
-| [🔧 **API Reference**](https://pr1m8.github.io/duckdantic/api/) | Complete API documentation |
-| [🏗️ **Architecture Guide**](https://pr1m8.github.io/duckdantic/guide/architecture/) | Design patterns and best practices |
-| [⚡ **Performance Guide**](https://pr1m8.github.io/duckdantic/guide/performance/) | Optimization tips and benchmarks |
+| [📖 **Getting Started**](https://duckdantic.readthedocs.io/en/latest/getting-started/) | Complete setup and basic usage guide |
+| [🎯 **Examples**](https://duckdantic.readthedocs.io/en/latest/examples/) | Real-world usage patterns and recipes |
+| [🔧 **API Reference**](https://duckdantic.readthedocs.io/en/latest/api/) | Complete API documentation |
+| [🏗️ **Architecture Guide**](https://duckdantic.readthedocs.io/en/latest/guide/architecture/) | Design patterns and best practices |
+| [⚡ **Performance Guide**](https://duckdantic.readthedocs.io/en/latest/guide/performance/) | Optimization tips and benchmarks |
 
 ## 🤝 Contributing
 
