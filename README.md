@@ -244,6 +244,130 @@ assert isinstance(mock, ProductionModel)  # ✅ Valid test double
 | [**dataclasses**](https://docs.python.org/3/library/dataclasses.html) | ✅ **Fully Compatible** | Built-in support for dataclass validation |
 | [**TypedDict**](https://docs.python.org/3/library/typing.html#typing.TypedDict) | ✅ **Fully Compatible** | Validate dictionary structures dynamically |
 
+## 🔬 Type Algebra & Relationships
+
+Duckdantic implements a **complete algebraic type system** with mathematical properties that enable powerful type composition and analysis:
+
+### Set-Theoretic Operations
+
+```python
+from duckdantic import Duck, TraitSpec, FieldSpec
+
+# Define base types
+Person = Duck.from_fields({"name": str, "age": int})
+Employee = Duck.from_fields({"name": str, "age": int, "employee_id": str})
+Manager = Duck.from_fields({"name": str, "age": int, "employee_id": str, "team": list})
+
+# Subtyping relationships (Employee ⊆ Person)
+assert Employee <= Person  # Employee is a subtype of Person
+assert Manager <= Employee  # Manager is a subtype of Employee
+assert Manager <= Person   # Transitivity holds!
+
+# Type intersection (A ∩ B)
+HasName = Duck.from_fields({"name": str})
+HasAge = Duck.from_fields({"age": int})
+PersonIntersect = HasName & HasAge  # Creates intersection type
+
+# Type union (A ∪ B)
+EmailUser = Duck.from_fields({"email": str})
+PhoneUser = Duck.from_fields({"phone": str})
+ContactableUser = EmailUser | PhoneUser  # Either email OR phone
+
+# Type algebra satisfies mathematical laws
+assert (A <= B and B <= C) implies (A <= C)  # Transitivity
+assert (A & B) <= A and (A & B) <= B         # Intersection property
+assert A <= (A | B) and B <= (A | B)         # Union property
+```
+
+### Structural Width & Depth Subtyping
+
+```python
+# Width subtyping: More fields = more specific
+Basic = Duck.from_fields({"id": int})
+Extended = Duck.from_fields({"id": int, "name": str})
+assert Extended <= Basic  # Extended is a subtype (has more fields)
+
+# Depth subtyping: More specific field types
+Generic = Duck.from_fields({"items": list})
+Specific = Duck.from_fields({"items": list[str]})
+assert Specific <= Generic  # Specific is a subtype (more precise type)
+
+# Combined width + depth
+BaseAPI = Duck.from_fields({"status": int})
+DetailedAPI = Duck.from_fields({"status": int, "data": dict[str, Any], "meta": dict})
+assert DetailedAPI <= BaseAPI  # Satisfies both width and depth
+```
+
+### Algebraic Properties
+
+Duckdantic's type system satisfies important algebraic properties:
+
+| Property | Definition | Example |
+|----------|------------|---------|
+| **Reflexivity** | A ⊆ A | `Person <= Person` is always true |
+| **Antisymmetry** | A ⊆ B ∧ B ⊆ A ⟹ A = B | If types satisfy each other, they're equivalent |
+| **Transitivity** | A ⊆ B ∧ B ⊆ C ⟹ A ⊆ C | Subtyping chains work as expected |
+| **Join Existence** | ∀A,B ∃(A ∨ B) | Union types always exist |
+| **Meet Existence** | ∀A,B ∃(A ∧ B) | Intersection types always exist |
+
+### Practical Applications
+
+```python
+# Type-safe function composition
+def process_person(obj: Person) -> dict:
+    """Accepts any object satisfying Person shape"""
+    return {"name": obj.name.upper(), "adult": obj.age >= 18}
+
+def process_employee(obj: Employee) -> dict:
+    """More specific - requires employee_id too"""
+    result = process_person(obj)  # Safe! Employee <= Person
+    result["emp_id"] = obj.employee_id
+    return result
+
+# Automatic type narrowing
+manager = Manager(name="Alice", age=35, employee_id="M001", team=["Bob", "Charlie"])
+assert isinstance(manager, Person)    # ✅ True
+assert isinstance(manager, Employee)  # ✅ True
+assert isinstance(manager, Manager)   # ✅ True
+
+# Use in generic contexts
+from typing import TypeVar
+
+T = TypeVar('T', bound=Person)
+
+def birthday(person: T) -> T:
+    """Works with any Person-like type"""
+    person.age += 1
+    return person
+
+# Works with all subtypes!
+birthday(manager)  # Manager in, Manager out
+```
+
+### Type Lattice Visualization
+
+```
+        ⊤ (Top - Empty type)
+         |
+      Manager
+         |
+      Employee
+         |
+       Person
+         |
+    HasName ∩ HasAge
+       /   \
+   HasName  HasAge
+       \   /
+        ⊥ (Bottom - Any type)
+```
+
+This algebraic foundation enables:
+- **Type inference**: Automatically determine most general valid types
+- **Type checking**: Mathematically prove type safety
+- **Type optimization**: Find minimal type representations
+- **Composition**: Build complex types from simple ones
+
 ## 🏗️ Architecture Patterns
 
 ### Hexagonal Architecture
@@ -271,6 +395,62 @@ Query = Duck.from_fields({"query_id": str, "filters": dict})
 # Any object with the right shape is valid
 CreateUserCommand = {"command_id": "123", "timestamp": datetime.now(), "user_data": {...}}
 assert isinstance(CreateUserCommand, Command)  # ✅
+```
+
+## 🔗 Type Relationships & Operators
+
+Duckdantic provides rich comparison operators for type analysis:
+
+### Comparison Operators
+
+```python
+from duckdantic import Duck
+
+# Define a type hierarchy
+Animal = Duck.from_fields({"name": str})
+Dog = Duck.from_fields({"name": str, "breed": str})
+Poodle = Duck.from_fields({"name": str, "breed": str, "fluffy": bool})
+
+# Subtype checking (<=, >=)
+assert Poodle <= Dog <= Animal  # Poodle is most specific
+assert Animal >= Dog >= Poodle  # Animal is most general
+
+# Strict subtype (<, >)
+assert Poodle < Dog < Animal   # Strictly more specific
+assert Animal > Dog > Poodle   # Strictly more general
+
+# Type equality (==)
+Dog2 = Duck.from_fields({"name": str, "breed": str})
+assert Dog == Dog2  # Same structure = equal types
+
+# Type compatibility (~)
+class MyDog:
+    name: str = "Fido"
+    breed: str = "Labrador"
+
+assert MyDog() ~ Dog  # MyDog instance satisfies Dog shape
+```
+
+### Advanced Type Operations
+
+```python
+# Type difference
+RequiredFields = Employee - Person  # Fields in Employee but not Person
+# Result: {"employee_id": str}
+
+# Type complement
+NotPerson = ~Person  # Types that don't satisfy Person
+
+# Conditional types
+Adult = Person.where(lambda p: p.age >= 18)
+Senior = Person.where(lambda p: p.age >= 65)
+
+# Type guards
+def process_contact(contact: EmailUser | PhoneUser):
+    if contact ~ EmailUser:
+        send_email(contact.email)
+    elif contact ~ PhoneUser:
+        send_sms(contact.phone)
 ```
 
 ## 📊 Performance
