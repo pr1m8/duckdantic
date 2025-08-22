@@ -2,12 +2,12 @@
 
 
 [build-system]
-requires = ["hatchling", "hatch-vcs"]
+requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
 name = "duckdantic"
-version = "1.1.0"
+version = "1.1.1"
 description = "Flexible structural typing and runtime validation for Python"
 readme = "README.md"
 requires-python = ">=3.12"
@@ -50,11 +50,7 @@ Issues = "https://github.com/pr1m8/duckdantic/issues"
 Changelog = "https://github.com/pr1m8/duckdantic/blob/main/CHANGELOG.md"
 "PyPI" = "https://pypi.org/project/duckdantic/"
 
-[tool.hatch.version]
-source = "vcs"
-
-[tool.hatch.build.hooks.vcs]
-version-file = "src/duckdantic/__about__.py"
+# Version is now managed statically in [project] section
 
 [tool.hatch.envs.types]
 extra-dependencies = ["mypy>=1.0.0"]

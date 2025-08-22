@@ -5,6 +5,7 @@ __pycache__/
 *.pyd
 .Python
 build/
+src/duckdantic/__about__.py
 develop-eggs/
 dist/
 downloads/
