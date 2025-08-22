@@ -46,6 +46,13 @@ def _from_mapping(mapping: Mapping[str, Any]) -> dict[str, FieldView]:
             def _as_tuple(x):
                 if x is None:
                     return ()
+                # Check for AliasChoices first
+                choices = getattr(x, "choices", None)
+                if choices is not None:
+                    try:
+                        return tuple(str(i) for i in choices)
+                    except Exception:
+                        pass
                 if isinstance(x, list | tuple):
                     return tuple(str(i) for i in x)
                 return (str(x),)

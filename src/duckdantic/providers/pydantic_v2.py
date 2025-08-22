@@ -26,14 +26,15 @@ class PydanticV2Provider(FieldProvider):
             def _as_tuple(x):
                 if x is None:
                     return ()
-                if isinstance(x, list | tuple | set):
-                    return tuple(str(i) for i in x)
+                # Check for AliasChoices first
                 choices = getattr(x, "choices", None)
                 if choices is not None:
                     try:
                         return tuple(str(i) for i in choices)
                     except Exception:
                         pass
+                if isinstance(x, list | tuple | set):
+                    return tuple(str(i) for i in x)
                 if hasattr(x, "__iter__") and not isinstance(x, str | bytes):
                     try:
                         return tuple(str(i) for i in x)

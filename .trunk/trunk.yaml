@@ -70,9 +70,9 @@ lint:
     - osv-scanner
 
 actions:
-  disabled:
-    - post-merge-bootstrap
-    - bootstrap-now
+  #disabled:
+  #- post-merge-bootstrap
+  #- bootstrap-now
   output_level: verbose
   enabled:
     - trunk-announce
@@ -116,15 +116,6 @@ actions:
       triggers:
         - git_hooks: [commit-msg]
 
-    - id: post-merge-bootstrap
-      display_name: Bootstrap after merge
-      run: bash -lc '[ -x tools/bootstrap.sh ] && tools/bootstrap.sh || true'
-      triggers:
-        - git_hooks: [post-merge]
-
-    - id: bootstrap-now
-      display_name: Bootstrap now
-      run: bash -lc '[ -x tools/bootstrap.sh ] && tools/bootstrap.sh || echo "No tools/bootstrap.sh found"'
 tools:
   disabled:
     - uv
