@@ -18,7 +18,7 @@ jobs:
       paths-ignore: ${{ steps.gitignore.outputs.paths-ignore }}
     steps:
       - name: 📥 Checkout Code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           submodules: true
           token: ${{ secrets.GH_TOKEN }}
@@ -44,7 +44,7 @@ jobs:
       RESOURCE_PATHS: ${{ needs.setup.outputs.resource-paths }}
     steps:
       - name: 📥 Checkout Code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           submodules: true
           token: ${{ secrets.GH_TOKEN }}
@@ -82,7 +82,7 @@ jobs:
       fail-fast: false
     steps:
       - name: 📥 Checkout Code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           submodules: true
           token: ${{ secrets.GH_TOKEN }}
@@ -130,7 +130,7 @@ jobs:
       fail-fast: false
     steps:
       - name: 📥 Checkout Code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           submodules: true
           token: ${{ secrets.GH_TOKEN }}
