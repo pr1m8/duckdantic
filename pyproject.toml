@@ -7,7 +7,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "duckdantic"
-dynamic = ["version"]
+version = "1.0.1"
 description = "Flexible structural typing and runtime validation for Python"
 readme = "README.md"
 requires-python = ">=3.12"
