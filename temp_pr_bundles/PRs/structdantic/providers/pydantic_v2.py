@@ -14,7 +14,8 @@ from temp_pr_bundles.PRs.structdantic.providers.base import Capabilities, FieldP
 class PydanticV2Provider(FieldProvider):
     def can_handle(self, obj: Any) -> bool:
         return isinstance(obj, type) and isinstance(
-            getattr(obj, "model_fields", None), Mapping
+            getattr(obj, "model_fields", None),
+            Mapping,
         )
 
     def fields(self, obj: type) -> dict[str, FieldView]:

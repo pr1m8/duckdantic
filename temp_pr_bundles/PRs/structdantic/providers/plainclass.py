@@ -13,7 +13,11 @@ class PlainClassProvider(FieldProvider):
     def fields(self, obj: type) -> dict[str, FieldView]:
         hints = get_type_hints(obj, include_extras=True)
         return {
-            name: FieldView(name=name, annotation=ann, origin=FieldOrigin.ANNOTATION)
+            name: FieldView(
+                name=name,
+                annotation=ann,
+                origin=FieldOrigin.ANNOTATION,
+            )
             for name, ann in hints.items()
         }
 

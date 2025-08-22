@@ -44,12 +44,16 @@ def abc_for(
 
 
 def duckissubclass(
-    candidate: Any, trait: TraitSpec, policy: TypeCompatPolicy = POLICY_PRAGMATIC
+    candidate: Any,
+    trait: TraitSpec,
+    policy: TypeCompatPolicy = POLICY_PRAGMATIC,
 ) -> bool:
     return bool(satisfies(candidate, trait, policy))
 
 
 def duckisinstance(
-    obj: Any, trait: TraitSpec, policy: TypeCompatPolicy = POLICY_PRAGMATIC
+    obj: Any,
+    trait: TraitSpec,
+    policy: TypeCompatPolicy = POLICY_PRAGMATIC,
 ) -> bool:
     return bool(satisfies(obj, trait, policy))
