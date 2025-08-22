@@ -738,3 +738,4 @@ tests/dev/
 # Claude AI temporary files
 .claude/settings.local.json.tmp.*
 .claude/settings.local.json.tmp.*/
+.trunk/

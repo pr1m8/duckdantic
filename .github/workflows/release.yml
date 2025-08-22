@@ -1,61 +1,76 @@
----
-name: 🚀 Publish Release
+name: Release
+
 on:
-  release:
-    types: [published]
+  push:
+    tags:
+      - "v*"
+
 permissions:
-  contents: read
-  id-token: write # Needed for PyPI trusted publishing
-concurrency:
-  group: release-${{ github.ref }}
-  cancel-in-progress: true
+  contents: write
+  id-token: write
+
 jobs:
-  publish:
-    name: 📦 Publish ${{ matrix.package }}
+  test:
     runs-on: ubuntu-latest
-    env:
-      ACTIONS_STEP_DEBUG: ${{ secrets.ACTIONS_DEBUG || 'false' }}
-    strategy:
-      matrix:
-        package:
-          - haive-core
-          - haive-agents
-          - haive-games
-          - haive-tools
-          - haive-prebuilt
-          - haive-dataflow
     steps:
-      - name: 📥 Checkout Code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+      - name: Set up Python
+        run: uv python install 3.12
+      - name: Install dependencies
+        run: uv sync --all-extras --dev
+      - name: Run tests
+        run: uv run pytest
+
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
         with:
-          submodules: true
-          token: ${{ secrets.GH_TOKEN }}
-      - name: 📦 Get Poetry Metadata
-        id: poetry
-        uses: ./.github/actions/get-poetry-info
-      - name: 🧾 Echo Package Metadata
-        run: |
-          echo "📦 Name:        ${{ steps.poetry.outputs.name }}"
-          echo "🔖 Version:     ${{ steps.poetry.outputs.version }}"
-          echo "🧑 Authors:     ${{ steps.poetry.outputs.authors }}"
-          echo "📄 License:     ${{ steps.poetry.outputs.license }}"
-          echo "📝 Description: ${{ steps.poetry.outputs.description }}"
-          echo "🌐 Homepage:    ${{ steps.poetry.outputs.homepage }}"
-          echo "🔗 Repository:  ${{ steps.poetry.outputs.repository }}"
-          echo "📚 Docs:        ${{ steps.poetry.outputs.documentation }}"
-          echo "🏷 Classifiers:"
-          echo "${{ steps.poetry.outputs.classifiers }}"
-      - name: 🐍 Set up Python ${{ steps.poetry.outputs.python }}
-        uses: actions/setup-python@v5
+          fetch-depth: 0
+      - name: Install uv
+        uses: astral-sh/setup-uv@v3
+      - name: Set up Python
+        run: uv python install 3.12
+      - name: Install dependencies
+        run: uv sync --dev
+      - name: Build package
+        run: uv build
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
         with:
-          python-version: ${{ steps.poetry.outputs.python }}
-          cache: poetry
-      - name: 🛠 Install Poetry
-        run: pipx install poetry==1.8.0
-      - name: 🔐 Configure PyPI Credentials
-        run: poetry config pypi-token.pypi ${{ secrets.PYPI_TOKEN }}
-      - name: 📦 Build and Publish ${{ matrix.package }}
-        run: |-
-          cd packages/${{ matrix.package }}
-          poetry build --format wheel
-          poetry publish --skip-existing
+          name: dist
+          path: dist/
+
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    environment: release
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+      - name: Publish to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+
+  release:
+    needs: [test, build]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*
+          generate_release_notes: true

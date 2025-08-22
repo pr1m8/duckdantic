@@ -20,11 +20,11 @@ Deep dive into trait specifications, field types, and trait composition.
 
 Understand and customize type checking behavior with flexible policies.
 
-### [Providers](providers.md)
+### Providers _(Coming Soon)_
 
 Learn how Duckdantic normalizes fields from different object types.
 
-### [Advanced Topics](advanced.md)
+### Advanced Topics _(Coming Soon)_
 
 Explore advanced features like custom matchers, performance optimization, and integration patterns.
 
@@ -54,7 +54,7 @@ Explore advanced features like custom matchers, performance optimization, and in
 
   ***
 
-  Read [Advanced Topics](advanced.md) for optimization strategies
+  Advanced optimization strategies coming soon
 
 </div>
 

@@ -4,19 +4,19 @@ Real-world examples demonstrating Duckdantic usage patterns.
 
 ## Example Categories
 
-### [Pydantic Integration](pydantic.md)
+### Pydantic Integration _(Coming Soon)_
 
 Working with Pydantic models, validation, and conversion.
 
-### [Dataclasses](dataclasses.md)
+### Dataclasses _(Coming Soon)_
 
 Using Duckdantic with Python dataclasses.
 
-### [TypedDict](typeddict.md)
+### TypedDict _(Coming Soon)_
 
 Structural typing with TypedDict classes.
 
-### [Duck Typing Patterns](duck-typing.md)
+### Duck Typing Patterns _(Coming Soon)_
 
 Advanced duck typing patterns and techniques.
 

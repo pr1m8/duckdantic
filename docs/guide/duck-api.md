@@ -396,4 +396,4 @@ def adapt_user(external: ExternalUser) -> InternalUser:
 
 - Learn about [Traits](traits.md) for more complex requirements
 - Explore [Type Policies](policies.md) for customization
-- Check out [Advanced Topics](advanced.md) for optimization
+- Check out Advanced Topics (coming soon) for optimization
