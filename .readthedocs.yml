@@ -24,10 +24,4 @@ formats:
   - pdf
   - epub
 
-# Optional: declare the Python requirements required to build your documentation
-python:
-  install:
-    - method: pip
-      path: .
-      extra_requirements:
-        - docs
+# Python requirements will be installed via uv in post_install
