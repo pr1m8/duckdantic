@@ -1,261 +1,170 @@
 # Duckdantic 🦆
 
-[![PyPI - Version](https://img.shields.io/pypi/v/duckdantic.svg)](https://pypi.org/project/duckdantic)
-[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/duckdantic.svg)](https://pypi.org/project/duckdantic)
+[![PyPI](https://img.shields.io/pypi/v/duckdantic.svg)](https://pypi.org/project/duckdantic/)
+[![Python Version](https://img.shields.io/pypi/pyversions/duckdantic.svg)](https://pypi.org/project/duckdantic/)
+[![License](https://img.shields.io/pypi/l/duckdantic.svg)](https://github.com/pr1m8/duckdantic/blob/main/LICENSE.txt)
+[![Tests](https://github.com/pr1m8/duckdantic/workflows/tests/badge.svg)](https://github.com/pr1m8/duckdantic/actions)
+[![Documentation](https://img.shields.io/badge/docs-mkdocs-blue)](https://pr1m8.github.io/duckdantic/)
 
-**Fluent duck typing for Pydantic and beyond.**
+**Duckdantic** is a Python library for flexible structural typing and runtime validation. It provides a powerful way to define structural types (traits) and check whether objects satisfy them at runtime, without requiring inheritance or type annotations.
 
-Duckdantic provides structural typing and runtime validation for Python, enabling seamless duck typing with Pydantic models and other data structures.
+## ✨ Features
 
-## Why Duckdantic?
+- 🦆 **True Duck Typing**: Check object structures at runtime without inheritance
+- 🏗️ **Trait-Based Validation**: Define reusable structural requirements
+- 🔧 **Framework Agnostic**: Works with Pydantic, dataclasses, TypedDict, and plain objects
+- 🎯 **Flexible Policies**: Customize type checking behavior to your needs
+- 🚀 **High Performance**: Intelligent caching and optimized field normalization
+- 🎨 **Intuitive API**: Clean, Pythonic interface with excellent IDE support
+- 🔌 **ABC Integration**: Use traits with `isinstance()` and `issubclass()`
 
-In Python, if it walks like a duck and quacks like a duck, it's probably a duck. But what if you want to make _sure_ it's a duck at runtime? What if you want to check if that dictionary has the right "duck-like" fields, regardless of its actual type?
-
-Duckdantic bridges this gap by providing:
-
-- 🦆 **True duck typing** - Check object structure, not inheritance
-- 🔍 **Runtime validation** - Ensure objects match expected traits
-- 🎯 **Zero dependencies** - Works with Pydantic, dataclasses, TypedDict, and more
-- ⚡ **Blazing fast** - Caches normalization for optimal performance
-- 🐍 **Pythonic** - Integrates with `isinstance()` and `issubclass()`
-
-## Installation
+## 📦 Installation
 
 ```bash
 pip install duckdantic
 ```
 
-## Quick Start
+For Pydantic support:
 
-### Basic Duck Typing
+```bash
+pip install "duckdantic[pydantic]"
+```
+
+## 🚀 Quick Start
+
+### Basic Usage
 
 ```python
 from duckdantic import TraitSpec, FieldSpec, satisfies
 
-# Define what a "duck" looks like
-duck_trait = TraitSpec(
-    name="Duck",
-    fields=[
-        FieldSpec(name="name", type=str, required=True),
-        FieldSpec(name="age", type=int, required=True),
-        FieldSpec(name="quack", type=str, required=False),
-    ]
+# Define a trait
+PersonTrait = TraitSpec(
+    name="Person",
+    fields=(
+        FieldSpec("name", str, required=True),
+        FieldSpec("age", int, required=True),
+    )
 )
 
-# Any object can be a duck if it has the right fields
-class Bird:
-    def __init__(self, name: str, age: int):
+# Check if objects satisfy the trait
+class Employee:
+    def __init__(self, name: str, age: int, employee_id: str):
         self.name = name
         self.age = age
+        self.employee_id = employee_id
 
-# This dictionary is also a duck!
-duck_dict = {"name": "Donald", "age": 5}
-
-# Check if they satisfy the duck trait
-assert satisfies(Bird("Daffy", 3), duck_trait)
-assert satisfies(duck_dict, duck_trait)
+emp = Employee("Alice", 30, "EMP001")
+assert satisfies(emp, PersonTrait)  # ✅ True - has required fields
 ```
 
-### Working with Pydantic
+### Duck API (Recommended)
+
+The Duck API provides a more ergonomic interface, especially when working with Pydantic models:
 
 ```python
 from pydantic import BaseModel
-from duckdantic import satisfies, TraitSpec, FieldSpec
+from duckdantic import Duck
 
-# Your existing Pydantic model
 class User(BaseModel):
-    id: int
+    name: str
     email: str
-    name: str | None = None
+    age: int
 
-# Define trait independently
-user_trait = TraitSpec(
-    name="UserLike",
-    fields=[
-        FieldSpec(name="id", type=int, required=True),
-        FieldSpec(name="email", type=str, required=True),
-    ]
-)
+class Person(BaseModel):
+    name: str
+    age: int
 
-# Works with Pydantic models
-user = User(id=1, email="duck@example.com")
-assert satisfies(user, user_trait)
+# Create a duck type from a Pydantic model
+PersonDuck = Duck(Person)
 
-# But also with plain dictionaries
-user_dict = {"id": 2, "email": "goose@example.com"}
-assert satisfies(user_dict, user_trait)
+# Check if instances satisfy the duck type
+user = User(name="Bob", email="bob@example.com", age=25)
+assert isinstance(user, PersonDuck)  # ✅ True - has required fields
 
-# And even other objects
-class Customer:
-    def __init__(self, id: int, email: str, company: str):
-        self.id = id
-        self.email = email
-        self.company = company
-
-customer = Customer(3, "swan@example.com", "Duck Corp")
-assert satisfies(customer, user_trait)  # It's user-like!
+# Convert between compatible types
+person = PersonDuck.convert(user)  # Creates Person(name="Bob", age=25)
 ```
 
-### Python Integration with ABCs
+### Method Checking
+
+```python
+from duckdantic import MethodSpec, methods_satisfy
+
+# Define method requirements
+DrawableMethods = [
+    MethodSpec("draw", params=[int, int], returns=None),
+    MethodSpec("get_color", params=[], returns=str),
+]
+
+class Circle:
+    def draw(self, x: int, y: int) -> None:
+        pass
+
+    def get_color(self) -> str:
+        return "red"
+
+assert methods_satisfy(Circle, DrawableMethods)  # ✅ True
+```
+
+### ABC Integration
 
 ```python
 from duckdantic import TraitSpec, FieldSpec, abc_for
 
 # Define a trait
-person_trait = TraitSpec(
-    name="Person",
-    fields=[
-        FieldSpec(name="name", type=str, required=True),
-        FieldSpec(name="age", type=int, required=True),
-    ]
+ConfigTrait = TraitSpec(
+    name="Config",
+    fields=(
+        FieldSpec("host", str),
+        FieldSpec("port", int),
+    )
 )
 
-# Create an ABC that uses structural typing
-PersonABC = abc_for(person_trait)
+# Create an ABC from the trait
+ConfigABC = abc_for(ConfigTrait)
 
-# Now use with isinstance
-class Employee:
-    def __init__(self, name: str, age: int, dept: str):
-        self.name = name
-        self.age = age
-        self.dept = dept
+# Use with isinstance
+@ConfigABC.register
+class ServerConfig:
+    host: str = "localhost"
+    port: int = 8080
 
-emp = Employee("Alice", 30, "Engineering")
-assert isinstance(emp, PersonABC)  # True! It has the required fields
+assert isinstance(ServerConfig(), ConfigABC)  # ✅ True
 ```
 
-### Method Signature Checking
+## 🎯 Use Cases
 
-```python
-from duckdantic import MethodSpec, methods_satisfy
+- **API Validation**: Ensure objects have required fields before processing
+- **Plugin Systems**: Define interfaces without requiring inheritance
+- **Type Bridges**: Convert between similar types from different libraries
+- **Testing**: Create test doubles that satisfy production interfaces
+- **Configuration**: Validate configuration objects from various sources
 
-# Define required methods
-db_trait_methods = [
-    MethodSpec(name="save", params=[str], returns=bool),
-    MethodSpec(name="load", params=[int], returns=str),
-]
+## 📚 Documentation
 
-class Database:
-    def save(self, data: str) -> bool:
-        return True
+For comprehensive documentation, visit [https://pr1m8.github.io/duckdantic/](https://pr1m8.github.io/duckdantic/)
 
-    def load(self, id: int) -> str:
-        return f"Data {id}"
+- [Getting Started Guide](https://pr1m8.github.io/duckdantic/getting-started/)
+- [API Reference](https://pr1m8.github.io/duckdantic/api/)
+- [Examples](https://pr1m8.github.io/duckdantic/examples/)
+- [Advanced Usage](https://pr1m8.github.io/duckdantic/guide/advanced/)
 
-assert methods_satisfy(Database(), db_trait_methods)
-```
+## 🤝 Contributing
 
-## Advanced Features
+Contributions are welcome! Please feel free to submit a Pull Request. For major changes, please open an issue first to discuss what you would like to change.
 
-### Type Policies
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-Control how types are compared:
+## 📄 License
 
-```python
-from duckdantic import satisfies, POLICY_PRAGMATIC, TypeCompatPolicy
+This project is licensed under the MIT License - see the [LICENSE](LICENSE.txt) file for details.
 
-# Strict policy - exact type matches only
-strict_policy = TypeCompatPolicy(
-    allow_subclass=False,
-    numeric_widening=False,
-    literal_compatibility=False
-)
+## 🙏 Acknowledgments
 
-# Pragmatic policy (default) - sensible defaults
-# Allows int -> float, subclasses, etc.
-result = satisfies(obj, trait, policy=POLICY_PRAGMATIC)
-```
-
-### Detailed Explanations
-
-Get detailed information about why validation failed:
-
-```python
-from duckdantic import explain
-
-result = explain(obj, trait)
-if not result["ok"]:
-    print("Missing fields:", result["missing"])
-    print("Type mismatches:", result["type_mismatches"])
-    print("Failed requirements:", result["failed_requirements"])
-```
-
-### Set Operations
-
-Combine traits using set operations:
-
-```python
-from duckdantic import union, intersect, minus
-
-# Create a trait that requires fields from both
-combined = intersect(user_trait, profile_trait)
-
-# Create a trait that accepts either
-flexible = union(user_trait, guest_trait)
-
-# Remove fields from a trait
-simplified = minus(user_trait, ["email", "phone"])
-```
-
-### Registry Pattern
-
-Manage collections of traits:
-
-```python
-from duckdantic import TraitRegistry
-
-registry = TraitRegistry()
-registry.add("User", user_trait)
-registry.add("Admin", admin_trait)
-
-# Find all traits an object satisfies
-compatible = registry.compatible_traits(some_object)
-print(f"Object satisfies: {compatible}")
-```
-
-## Supported Types
-
-Duckdantic works with:
-
-- ✅ Pydantic models (v2)
-- ✅ Standard dataclasses
-- ✅ TypedDict classes
-- ✅ attrs classes
-- ✅ Plain classes with annotations
-- ✅ Dictionaries and mappings
-- ✅ Any combination of the above!
-
-## Performance
-
-Duckdantic uses intelligent caching to ensure optimal performance:
-
-```python
-from duckdantic import get_cache_stats, clear_cache
-
-# Check cache performance
-stats = get_cache_stats()
-print(f"Cache hits: {stats['hits']}, misses: {stats['misses']}")
-
-# Clear cache if needed
-clear_cache()
-```
-
-## Use Cases
-
-- **API Validation** - Ensure responses match expected structure
-- **Plugin Systems** - Verify plugins implement required interfaces
-- **Configuration** - Validate settings from multiple sources
-- **Testing** - Assert objects have expected shape
-- **Integration** - Bridge between different frameworks
-
-## Contributing
-
-We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
-
-## License
-
-Duckdantic is distributed under the terms of the [MIT](https://spdx.org/licenses/MIT.html) license.
-
----
-
-_If it walks like a duck and quacks like a duck, Duckdantic can check that for you!_ 🦆
+- Inspired by structural typing concepts from TypeScript and Go interfaces
+- Built to complement Pydantic's excellent runtime validation
+- Thanks to all contributors and users of the library
