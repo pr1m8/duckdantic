@@ -550,8 +550,9 @@ See our [**Contributing Guide**](CONTRIBUTING.md) for detailed instructions.
 
 - 🐛 **Found a bug?** [Open an issue](https://github.com/pr1m8/duckdantic/issues)
 - 💡 **Have an idea?** [Start a discussion](https://github.com/pr1m8/duckdantic/discussions)
-- 📖 **Need help?** Check our [documentation](https://pr1m8.github.io/duckdantic/)
+- 📖 **Need help?** Check our [documentation](https://duckdantic.readthedocs.io/)
 - 🌟 **Like the project?** Give us a star on [GitHub](https://github.com/pr1m8/duckdantic)!
+- 📦 **Install it!** Get it from [PyPI](https://pypi.org/project/duckdantic/)
 
 ## 📄 License
 
